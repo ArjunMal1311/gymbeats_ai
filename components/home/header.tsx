@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { Source_Code_Pro, Anton } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
+import { Profile } from "@prisma/client";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const scp_font = Source_Code_Pro({
@@ -21,7 +22,7 @@ const scp_font_2 = Anton({
 });
 
 interface UserProps {
-  user: any;
+  user: Profile | undefined | null;
 }
 
 const Header = ({ user }: UserProps) => {
