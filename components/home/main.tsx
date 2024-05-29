@@ -18,7 +18,7 @@ const Main = () => {
     };
 
     return (
-        <div className='pt-32 relative w-screen min-h-screen '>
+        <div className='pt-32 relative w-screen min-h-screen z-[80]'>
             <div className="pt-20 relative">
                 <div className="text-center px-8">
                     <div className="mb-6" data-aos="fade-down">

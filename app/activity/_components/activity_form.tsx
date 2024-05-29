@@ -19,7 +19,6 @@ import { Meteors } from "@/components/ui/meteors";
 import { Vortex } from "@/components/ui/vortex";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { HoverEffect } from "@/components/ui/card-hover";
-import { projects } from "@/components/information/info";
 
 const scp_font = Source_Code_Pro({
     weight: "500",
@@ -102,6 +101,7 @@ const ActivityForm = () => {
             const songList = extractSongs(response.data);
             setResult(songList);
             setSelectedForm("Result");
+            
 
         } catch (error) {
             console.error("Error:", error);
@@ -597,17 +597,13 @@ const ActivityForm = () => {
                         <div>
                             <h2 className="text-2xl px-8 font-bold tracking-tight">Recommended Songs</h2>
 
-                            <ul className="list-disc pl-5">
-                                {result.map((song, index) => (
-                                    <li key={index}>{song.song} {song.artist} </li>
-                                ))}
-                            </ul>
+                            {result.length == 0 && <div className="px-8 font-semibold my-4">No Songs Found!</div>}
 
                             <div className="max-w-5xl">
-                                <HoverEffect items={projects} />
+                                <HoverEffect items={result} />
                             </div>
 
-                            <div className="space-x-6 my-4">
+                            <div className="space-x-6 px-8 my-4">
                                 <Button onClick={() => setSelectedForm("Activity")}>
                                     Back to Activity
                                 </Button>

@@ -1,3 +1,4 @@
+"use client"
 
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,9 +10,8 @@ export const HoverEffect = ({
     className,
 }: {
     items: {
-        title: string;
-        description: string;
-        link: string;
+        song: string;
+        artist: string;
     }[];
     className?: string;
 }) => {
@@ -20,14 +20,13 @@ export const HoverEffect = ({
     return (
         <div
             className={cn(
-                "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 py-10",
+                "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-10",
                 className
             )}
         >
             {items.map((item, idx) => (
-                <Link
-                    href={item?.link}
-                    key={item?.link}
+                <div
+                    key={item?.song}
                     className="relative group  block p-2 h-full w-full"
                     onMouseEnter={() => setHoveredIndex(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
@@ -50,10 +49,10 @@ export const HoverEffect = ({
                         )}
                     </AnimatePresence>
                     <Card>
-                        <CardTitle>{item.title}</CardTitle>
-                        <CardDescription>{item.description}</CardDescription>
+                        <CardTitle>{item.song}</CardTitle>
+                        <CardDescription>{item.artist}</CardDescription>
                     </Card>
-                </Link>
+                </div>
             ))}
         </div>
     );
