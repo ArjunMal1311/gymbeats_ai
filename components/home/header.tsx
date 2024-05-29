@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { navigation } from "../information/info";
@@ -29,7 +28,7 @@ const Header = () => {
 
       <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
         <Link className={`${scp_font_2.className} w-fit xl:mr-8 block pl-4 items-center text-3xl`} href="/">
-          Gb.
+          Gb. AI
         </Link>
         <nav className={`${openNavigation ? "flex" : "hidden"} fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}>
           <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">

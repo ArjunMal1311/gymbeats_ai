@@ -9,10 +9,6 @@ const scp_font = Bebas_Neue({
     weight: "400",
     subsets: []
 })
-const scp_font_2 = Source_Code_Pro({
-    weight: "600",
-    subsets: []
-})
 
 const Main = () => {
     const text = "Gym Beats AI";

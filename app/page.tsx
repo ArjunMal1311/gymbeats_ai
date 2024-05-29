@@ -1,16 +1,13 @@
 import Footer from "@/components/home/footer";
 import GridItems from "@/components/home/grid-items";
-import Header from "@/components/home/header";
 import LaunchingSoon from "@/components/home/launching-soon";
 import Main from "@/components/home/main";
 import { Particles } from "@/components/home/support/particles";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <main className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
       <Particles className="absolute inset-0 -z-10" />
-      <Header />
       <Main />
       <GridItems />
       <LaunchingSoon />
