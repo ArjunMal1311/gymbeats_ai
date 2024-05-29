@@ -39,7 +39,7 @@ const Main = () => {
                                 animate="visible"
                                 variants={gradual}
                                 transition={{ duration: 1 }}
-                                className={`text-center  bg-clip-text ${scp_font.className} tracking-wide bg-gradient-to-r from-cyan-400 via-blue-600 to-cyan-400 font-display z-[999] text-[80px] font-bold drop-shadow-sm md:text-[150px] pt-6 pb-2 md:leading-[5rem]`}
+                                className={`text-center  bg-clip-text ${scp_font.className} tracking-wide bg-gradient-to-r from-cyan-400 via-blue-600 to-cyan-400 font-display z-[90] text-[80px] font-bold drop-shadow-sm md:text-[150px] pt-6 pb-2 md:leading-[5rem]`}
                             >
                                 {text}
                                 

@@ -36,7 +36,7 @@ const Header = () => {
               <Link
                 key={item.id}
                 href={item.url}
-                className={`block relative z-[990] font-code hover:text-white text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-sm text-[#FFFFFF80] lg:font-semibold duration-200  ${scp_font.className} 
+                className={`block relative z-[990] font-code text-white text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-sm text-[#FFFFFF80] lg:font-semibold duration-200  ${scp_font.className} 
               ${item.url === path
                     ? "z-2 text-white"
                     : ""

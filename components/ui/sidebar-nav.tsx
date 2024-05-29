@@ -26,7 +26,7 @@ export function SidebarNav({ className, items, onSelect, selectedItem, ...props 
   return (
     <nav
       className={cn(
-        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1",
+        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 ",
         className,
       )}
       {...props}
@@ -40,7 +40,7 @@ export function SidebarNav({ className, items, onSelect, selectedItem, ...props 
             selectedItem === item.title
               ? "bg-white bg-opacity-10 hover:bg-muted text-white"
               : "hover:text-gray-500",
-            "justify-start text-md", scp_font.className
+            "justify-start text-md w-[200px]", scp_font.className
           )}
         >
           {item.title}

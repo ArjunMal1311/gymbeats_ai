@@ -13,11 +13,17 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
-import { Source_Code_Pro} from "next/font/google";
+import { Source_Code_Pro } from "next/font/google";
+import { TextGenerateEffect } from "@/components/ui/text-generate";
+import { Meteors } from "@/components/ui/meteors";
+import { Vortex } from "@/components/ui/vortex";
+import { SparklesCore } from "@/components/ui/sparkles";
+import { HoverEffect } from "@/components/ui/card-hover";
+import { projects } from "@/components/information/info";
 
 const scp_font = Source_Code_Pro({
-  weight: "500",
-  subsets: []
+    weight: "500",
+    subsets: []
 })
 
 const sidebarNavItems = [
@@ -45,6 +51,7 @@ const formSchema = z.object({
 });
 
 const ActivityForm = () => {
+
     const router = useRouter();
     const [selectedForm, setSelectedForm] = useState("Activity");
     const [predictionPreference, setPredictionPreference] = useState("low");
@@ -104,11 +111,13 @@ const ActivityForm = () => {
     return (
         <div className={`space-y-4 py-8 pb-16 md:block`}>
 
-            <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-                <aside className="-mx-4 lg:w-1/5">
+            <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0">
+                <aside className="mr-16">
                     <SidebarNav className="" items={sidebarNavItems} onSelect={setSelectedForm} selectedItem={selectedForm} />
                 </aside>
-                <div className="flex-1 lg:max-w-2xl">
+
+
+                <div className="flex-1 lg:min-w-[672px]">
                     {selectedForm !== "Result" && (
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -586,13 +595,17 @@ const ActivityForm = () => {
 
                     {selectedForm === "Result" && (
                         <div>
-                            <h2 className="text-2xl font-bold tracking-tight">Recommended Songs</h2>
+                            <h2 className="text-2xl px-8 font-bold tracking-tight">Recommended Songs</h2>
 
                             <ul className="list-disc pl-5">
                                 {result.map((song, index) => (
                                     <li key={index}>{song.song} {song.artist} </li>
                                 ))}
                             </ul>
+
+                            <div className="max-w-5xl">
+                                <HoverEffect items={projects} />
+                            </div>
 
                             <div className="space-x-6 my-4">
                                 <Button onClick={() => setSelectedForm("Activity")}>
@@ -605,6 +618,36 @@ const ActivityForm = () => {
                         </div>
                     )}
                 </div>
+                {(selectedForm === "Activity" || selectedForm === "Music") &&
+                    <div className="w-full hidden xl:flex items-center justify-center px-16">
+                        <div className="max-w-[700px]">
+                            <div className="h-[40rem] w-full bg-[#121212] flex flex-col items-center justify-center overflow-hidden rounded-md">
+                                <h1 className="md:text-5xl text-3xl lg:text-8xl font-bold text-center text-white relative z-20">
+                                    GymBeats AI
+                                </h1>
+                                <div className="w-[40rem] h-40 relative">
+
+                                    <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
+                                    <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
+                                    <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
+                                    <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
+
+                                    <SparklesCore
+                                        minSize={0.4}
+                                        maxSize={1}
+                                        particleDensity={1200}
+                                        className="w-full h-full"
+                                        particleColor="#FFFFFF"
+                                    />
+
+                                    <div className="absolute inset-0 w-full h-full bg-[#121212] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
             </div>
         </div>
     );
