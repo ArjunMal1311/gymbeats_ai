@@ -28,7 +28,6 @@ const Skeleton = () => (
     <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl dark:bg-dot-white/[0.2] bg-dot-black/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] border border-transparent dark:border-white/[0.2] bg-neutral-100 dark:bg-[#121212]"></div>
 );
 
-
 const SkeletonOne = () => {
     const variants = {
         initial: { x: 0 },
@@ -110,7 +109,7 @@ const SkeletonTwo = () => {
                     key={"skeleton-two" + i}
                     variants={variants}
                     style={{ maxWidth: Math.random() * (100 - 40) + 40 + "%" }}
-                    className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 bg-neutral-100 dark:bg-[#121212] w-full h-4"
+                    className="flex flex-row rounded-full border border-neutral-100 bg-green-200 bg-opacity-5 dark:border-white/[0.2] p-2 items-center space-x-2  w-full h-4"
                 ></motion.div>
             ))}
         </motion.div>
@@ -200,10 +199,10 @@ const SkeletonFour = () => {
                     className="rounded-full h-10 w-10"
                 />
                 <p className="sm:text-sm text-xs text-center font-semibold text-neutral-500 mt-4">
-                    Track your fitness progress
+                    Music Recommendations
                 </p>
                 <p className="border border-orange-500 bg-orange-100 dark:bg-orange-900/20 text-orange-600 text-xs rounded-full px-2 py-0.5 mt-4">
-                    Progress Tracker
+                    Music Grid
                 </p>
             </motion.div>
         </motion.div>
@@ -276,6 +275,17 @@ const items = [
         icon: <IconDeviceSpeaker className="h-4 w-4 text-neutral-500" />,
     },
     {
+        title: "Performance Tracking",
+        description: (
+            <span className="text-sm">
+                Monitor how music impacts your workout performance.
+            </span>
+        ),
+        header: <SkeletonFive />,
+        className: "md:col-span-1",
+        icon: <IconHeart className="h-4 w-4 text-neutral-500" />,
+    },
+    {
         title: "Mood-Based Playlists",
         description: (
             <span className="text-sm">
@@ -297,15 +307,5 @@ const items = [
         className: "md:col-span-2",
         icon: <IconRun className="h-4 w-4 text-neutral-500" />,
     },
-    {
-        title: "Performance Tracking",
-        description: (
-            <span className="text-sm">
-                Monitor how music impacts your workout performance.
-            </span>
-        ),
-        header: <SkeletonFive />,
-        className: "md:col-span-1",
-        icon: <IconHeart className="h-4 w-4 text-neutral-500" />,
-    },
+
 ];

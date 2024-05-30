@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
+import { ThumbsDownIcon, ThumbsUp, ThumbsUpIcon } from "lucide-react";
 import { useState } from "react";
 
 export const HoverEffect = ({
@@ -12,6 +12,7 @@ export const HoverEffect = ({
     items: {
         song: string;
         artist: string;
+        liked?: boolean;
     }[];
     className?: string;
 }) => {
@@ -20,14 +21,14 @@ export const HoverEffect = ({
     return (
         <div
             className={cn(
-                "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-10",
+                "flex flex-wrap py-10 justify-center",
                 className
             )}
         >
             {items.map((item, idx) => (
                 <div
                     key={item?.song}
-                    className="relative group  block p-2 h-full w-full"
+                    className="relative group p-2 w-full sm:w-[300px] h-[200px] md:h-[300px]"
                     onMouseEnter={() => setHoveredIndex(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
                 >
@@ -50,7 +51,11 @@ export const HoverEffect = ({
                     </AnimatePresence>
                     <Card>
                         <CardTitle>{item.song}</CardTitle>
-                        <CardDescription>{item.artist}</CardDescription>
+                        <div className="flex items-center space-x-2">
+                            <CardDescription>{item.artist}</CardDescription>
+                            {item.liked ? <div className="flex justify-center items-center"><ThumbsDownIcon /></div> : <div className="flex justify-center items-center"><ThumbsUpIcon /></div>}
+                            
+                        </div>
                     </Card>
                 </div>
             ))}

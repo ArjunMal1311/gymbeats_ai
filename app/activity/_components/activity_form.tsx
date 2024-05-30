@@ -19,6 +19,7 @@ import { Meteors } from "@/components/ui/meteors";
 import { Vortex } from "@/components/ui/vortex";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { HoverEffect } from "@/components/ui/card-hover";
+import Loading from "@/app/loading";
 
 const scp_font = Source_Code_Pro({
     weight: "500",
@@ -55,6 +56,7 @@ const ActivityForm = () => {
     const [selectedForm, setSelectedForm] = useState("Activity");
     const [predictionPreference, setPredictionPreference] = useState("low");
     const [result, setResult] = useState<{ song: string; artist: string }[]>([]);
+    const [loading, isLoading] = useState(false)
 
 
     const form = useForm({
@@ -96,113 +98,374 @@ const ActivityForm = () => {
 
     const onSubmit = async (values: any) => {
         try {
-            console.log(values)
+            isLoading(true)
             const response = await axios.post("/api/ai", { message: values });
             const songList = extractSongs(response.data);
             setResult(songList);
             setSelectedForm("Result");
-            
+            isLoading(false)
 
         } catch (error) {
+            isLoading(false)
             console.error("Error:", error);
         }
     };
 
     return (
-        <div className={`space-y-4 py-8 pb-16 md:block`}>
+        <div >
+            {loading ? <>
+                <div className="relative bottom-24 right-8">
+                    <Loading />
+                </div>
+            </> : <>
+                <div className={`space-y-4 py-8 pb-16 md:block`}>
 
-            <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0">
-                <aside className="mr-16">
-                    <SidebarNav className="" items={sidebarNavItems} onSelect={setSelectedForm} selectedItem={selectedForm} />
-                </aside>
+                    <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0">
+                        <aside className="mr-16">
+                            <SidebarNav className="" items={sidebarNavItems} onSelect={setSelectedForm} selectedItem={selectedForm} />
+                        </aside>
 
 
-                <div className="flex-1 lg:min-w-[672px]">
-                    {selectedForm !== "Result" && (
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                                {selectedForm === "Activity" &&
-                                    <>
-                                        <FormField
-                                            control={form.control}
-                                            name="activityType"
-                                            render={({ field }) => (
+                        <div className="flex-1 lg:min-w-[672px]">
+                            {selectedForm !== "Result" && (
+                                <Form {...form}>
+                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                        {selectedForm === "Activity" &&
+                                            <>
+                                                <FormField
+                                                    control={form.control}
+                                                    name="activityType"
+                                                    render={({ field }) => (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, x: -100 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ duration: 0.5 }}
+                                                        >
+                                                            <FormItem>
+                                                                <FormLabel>Activity Type</FormLabel>
+                                                                <FormControl >
+                                                                    <Select {...field}
+                                                                        onValueChange={(value) => {
+                                                                            field.onChange(value);
+
+                                                                        }}>
+                                                                        <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
+                                                                            <SelectValue placeholder="Select an activity" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
+                                                                            <SelectItem value="running">Running</SelectItem>
+                                                                            <SelectItem value="cycling">Cycling</SelectItem>
+                                                                            <SelectItem value="gymWorkouts">Gym Workouts</SelectItem>
+                                                                            <SelectItem value="yogaStretching">Yoga & Stretching</SelectItem>
+                                                                            <SelectItem value="sports">Sports</SelectItem>
+                                                                            <SelectItem value="dance">Dance</SelectItem>
+                                                                            <SelectItem value="martialArts">Martial Arts</SelectItem>
+                                                                            <SelectItem value="hikingWalking">Hiking & Walking</SelectItem>
+                                                                            <SelectItem value="waterActivities">Water Activities</SelectItem>
+                                                                            <SelectItem value="winterSports">Winter Sports</SelectItem>
+                                                                            <SelectItem value="climbing">Climbing</SelectItem>
+                                                                            <SelectItem value="miscellaneous">Miscellaneous</SelectItem>
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </FormControl>
+                                                                <FormDescription>Choose the type of activity you engage in.</FormDescription>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        </motion.div>
+                                                    )}
+                                                />
+
                                                 <motion.div
                                                     initial={{ opacity: 0, x: -100 }}
                                                     animate={{ opacity: 1, x: 0 }}
                                                     transition={{ duration: 0.5 }}
                                                 >
-                                                    <FormItem>
-                                                        <FormLabel>Activity Type</FormLabel>
-                                                        <FormControl >
-                                                            <Select {...field}
-                                                                onValueChange={(value) => {
-                                                                    field.onChange(value);
-
-                                                                }}>
-                                                                <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
-                                                                    <SelectValue placeholder="Select an activity" />
-                                                                </SelectTrigger>
-                                                                <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
-                                                                    <SelectItem value="running">Running</SelectItem>
-                                                                    <SelectItem value="cycling">Cycling</SelectItem>
-                                                                    <SelectItem value="gymWorkouts">Gym Workouts</SelectItem>
-                                                                    <SelectItem value="yogaStretching">Yoga & Stretching</SelectItem>
-                                                                    <SelectItem value="sports">Sports</SelectItem>
-                                                                    <SelectItem value="dance">Dance</SelectItem>
-                                                                    <SelectItem value="martialArts">Martial Arts</SelectItem>
-                                                                    <SelectItem value="hikingWalking">Hiking & Walking</SelectItem>
-                                                                    <SelectItem value="waterActivities">Water Activities</SelectItem>
-                                                                    <SelectItem value="winterSports">Winter Sports</SelectItem>
-                                                                    <SelectItem value="climbing">Climbing</SelectItem>
-                                                                    <SelectItem value="miscellaneous">Miscellaneous</SelectItem>
-                                                                </SelectContent>
-                                                            </Select>
-                                                        </FormControl>
-                                                        <FormDescription>Choose the type of activity you engage in.</FormDescription>
-                                                        <FormMessage />
-                                                    </FormItem>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="predictionPreference"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Prediction Preference</FormLabel>
+                                                                <FormControl>
+                                                                    <Select
+                                                                        {...field}
+                                                                        onValueChange={(value) => {
+                                                                            field.onChange(value);
+                                                                            setPredictionPreference(value);
+                                                                        }}
+                                                                    >
+                                                                        <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
+                                                                            <SelectValue placeholder="Select prediction preference" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
+                                                                            <SelectItem value="high">High</SelectItem>
+                                                                            <SelectItem value="medium">Medium</SelectItem>
+                                                                            <SelectItem value="low">Low</SelectItem>
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </FormControl>
+                                                                <FormDescription>Select the level of prediction detail you prefer.</FormDescription>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
                                                 </motion.div>
-                                            )}
-                                        />
 
-                                        <motion.div
-                                            initial={{ opacity: 0, x: -100 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.5 }}
-                                        >
-                                            <FormField
-                                                control={form.control}
-                                                name="predictionPreference"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Prediction Preference</FormLabel>
-                                                        <FormControl>
-                                                            <Select
-                                                                {...field}
-                                                                onValueChange={(value) => {
-                                                                    field.onChange(value);
-                                                                    setPredictionPreference(value);
-                                                                }}
-                                                            >
-                                                                <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
-                                                                    <SelectValue placeholder="Select prediction preference" />
-                                                                </SelectTrigger>
-                                                                <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
-                                                                    <SelectItem value="high">High</SelectItem>
-                                                                    <SelectItem value="medium">Medium</SelectItem>
-                                                                    <SelectItem value="low">Low</SelectItem>
-                                                                </SelectContent>
-                                                            </Select>
-                                                        </FormControl>
-                                                        <FormDescription>Select the level of prediction detail you prefer.</FormDescription>
-                                                        <FormMessage />
-                                                    </FormItem>
+                                                {["high", "medium", "low"].includes(predictionPreference) && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -100 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ duration: 0.5 }}
+                                                    >
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="duration"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Duration</FormLabel>
+                                                                    <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                        <Input className={`${scp_font.className}}`} placeholder="e.g., 30 minutes" {...field} />
+                                                                    </FormControl>
+                                                                    <FormDescription>Enter the duration of your activity.</FormDescription>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </motion.div>
                                                 )}
-                                            />
-                                        </motion.div>
 
-                                        {["high", "medium", "low"].includes(predictionPreference) && (
+                                                {["high", "medium", "low"].includes(predictionPreference) && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -100 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ duration: 0.5 }}
+                                                    >
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="intensity"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Intensity</FormLabel>
+                                                                    <FormControl>
+                                                                        <Select {...field}
+                                                                            onValueChange={(value) => {
+                                                                                field.onChange(value);
+
+                                                                            }}>
+                                                                            <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
+                                                                                <SelectValue placeholder="Select intensity level" />
+                                                                            </SelectTrigger>
+                                                                            <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
+                                                                                <SelectItem value="low">Low</SelectItem>
+                                                                                <SelectItem value="medium">Medium</SelectItem>
+                                                                                <SelectItem value="high">High</SelectItem>
+                                                                            </SelectContent>
+                                                                        </Select>
+                                                                    </FormControl>
+                                                                    <FormDescription>Select the intensity of your activity.</FormDescription>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </motion.div>
+                                                )}
+
+                                                {["high", "medium"].includes(predictionPreference) && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -100 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ duration: 0.5 }}
+                                                    >
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="frequency"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Frequency</FormLabel>
+                                                                    <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                        <Input className={`${scp_font.className}}`} placeholder="e.g., 3 times a week" {...field} />
+                                                                    </FormControl>
+                                                                    <FormDescription>Enter the frequency of your activity.</FormDescription>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </motion.div>
+                                                )}
+
+                                                {predictionPreference === "high" && (
+                                                    <>
+                                                        <motion.div
+                                                            initial={{ opacity: 0, x: -100 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ duration: 0.5 }}
+                                                        >
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="distance"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>Distance</FormLabel>
+                                                                        <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                            <Input className={`${scp_font.className}}`} placeholder="e.g., 5 km" {...field} />
+                                                                        </FormControl>
+                                                                        <FormDescription>Enter the distance covered (if applicable).</FormDescription>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </motion.div>
+
+                                                        <motion.div
+                                                            initial={{ opacity: 0, x: -100 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ duration: 0.5 }}
+                                                        >
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="location"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>Location</FormLabel>
+                                                                        <FormControl>
+                                                                            <Select {...field}
+                                                                                onValueChange={(value) => {
+                                                                                    field.onChange(value);
+
+                                                                                }}>
+                                                                                <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
+                                                                                    <SelectValue placeholder="Select location" />
+                                                                                </SelectTrigger>
+                                                                                <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
+                                                                                    <SelectItem value="indoor">Indoor</SelectItem>
+                                                                                    <SelectItem value="outdoor">Outdoor</SelectItem>
+                                                                                </SelectContent>
+                                                                            </Select>
+                                                                        </FormControl>
+                                                                        <FormDescription>Select the location of your activity.</FormDescription>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </motion.div>
+
+                                                        <motion.div
+                                                            initial={{ opacity: 0, x: -100 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ duration: 0.5 }}
+                                                        >
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="mood"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>Mood</FormLabel>
+                                                                        <FormControl>
+                                                                            <Select {...field}
+                                                                                onValueChange={(value) => {
+                                                                                    field.onChange(value);
+
+                                                                                }}>
+                                                                                <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
+                                                                                    <SelectValue placeholder="Select your mood" />
+                                                                                </SelectTrigger>
+                                                                                <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
+                                                                                    <SelectItem value="energetic">Energetic</SelectItem>
+                                                                                    <SelectItem value="relaxed">Relaxed</SelectItem>
+                                                                                </SelectContent>
+                                                                            </Select>
+                                                                        </FormControl>
+                                                                        <FormDescription>Select your mood during the activity.</FormDescription>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </motion.div>
+
+                                                        <motion.div
+                                                            initial={{ opacity: 0, x: -100 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ duration: 0.5 }}
+                                                        >
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="timeOfDay"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>Time of Day</FormLabel>
+                                                                        <FormControl>
+                                                                            <Select {...field}
+                                                                                onValueChange={(value) => {
+                                                                                    field.onChange(value);
+
+                                                                                }}>
+                                                                                <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
+                                                                                    <SelectValue placeholder="Select time of day" />
+                                                                                </SelectTrigger>
+                                                                                <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
+                                                                                    <SelectItem value="morning">Morning</SelectItem>
+                                                                                    <SelectItem value="afternoon">Afternoon</SelectItem>
+                                                                                    <SelectItem value="evening">Evening</SelectItem>
+                                                                                </SelectContent>
+                                                                            </Select>
+                                                                        </FormControl>
+                                                                        <FormDescription>Select the time of day for your activity.</FormDescription>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </motion.div>
+
+                                                        <motion.div
+                                                            initial={{ opacity: 0, x: -100 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ duration: 0.5 }}
+                                                        >
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="equipment"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>Equipment Used</FormLabel>
+                                                                        <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                            <Input className={`${scp_font.className}}`} placeholder="e.g., dumbbells, yoga mat" {...field} />
+                                                                        </FormControl>
+                                                                        <FormDescription>Enter the equipment used (if applicable).</FormDescription>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </motion.div>
+
+                                                    </>
+                                                )}
+
+                                                <motion.div
+                                                    initial={{ opacity: 0, x: -100 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ duration: 0.5 }}
+                                                >
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="additionalComments"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Additional Comments</FormLabel>
+                                                                <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                    <Input className={`${scp_font.className}}`} placeholder="Any other details..." {...field} />
+                                                                </FormControl>
+                                                                <FormDescription>Provide any additional comments or details.</FormDescription>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </motion.div>
+
+                                                <Button className="hover:bg-gray-600" onClick={() => { setSelectedForm("Music") }}>
+                                                    Next
+                                                </Button>
+                                            </>}
+                                        {selectedForm === "Music" && <>
                                             <motion.div
                                                 initial={{ opacity: 0, x: -100 }}
                                                 animate={{ opacity: 1, x: 0 }}
@@ -210,22 +473,20 @@ const ActivityForm = () => {
                                             >
                                                 <FormField
                                                     control={form.control}
-                                                    name="duration"
+                                                    name="languageOfMusic"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Duration</FormLabel>
+                                                            <FormLabel>Language of Music</FormLabel>
                                                             <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                                <Input className={`${scp_font.className}}`} placeholder="e.g., 30 minutes" {...field} />
+                                                                <Input className={`${scp_font.className}}`} placeholder="Enter language of music" {...field} />
                                                             </FormControl>
-                                                            <FormDescription>Enter the duration of your activity.</FormDescription>
+                                                            <FormDescription>Enter the language of the music you prefer.</FormDescription>
                                                             <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
                                             </motion.div>
-                                        )}
 
-                                        {["high", "medium", "low"].includes(predictionPreference) && (
                                             <motion.div
                                                 initial={{ opacity: 0, x: -100 }}
                                                 animate={{ opacity: 1, x: 0 }}
@@ -233,10 +494,73 @@ const ActivityForm = () => {
                                             >
                                                 <FormField
                                                     control={form.control}
-                                                    name="intensity"
+                                                    name="favouriteGenres"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Intensity</FormLabel>
+                                                            <FormLabel>Favourite Genres</FormLabel>
+                                                            <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                <Input className={`${scp_font.className}}`} placeholder="Enter your favourite genres" {...field} />
+                                                            </FormControl>
+                                                            <FormDescription>Enter your favourite music genres.</FormDescription>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, x: -100 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ duration: 0.5 }}
+                                            >
+                                                <FormField
+                                                    control={form.control}
+                                                    name="favouriteArtists"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Favourite Artists/Brands</FormLabel>
+                                                            <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                <Input className={`${scp_font.className}}`} placeholder="Enter your favourite artists or brands" {...field} />
+                                                            </FormControl>
+                                                            <FormDescription>Enter your favourite music artists or brands.</FormDescription>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, x: -100 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ duration: 0.5 }}
+                                            >
+                                                <FormField
+                                                    control={form.control}
+                                                    name="favouriteSongs"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Favourite Songs</FormLabel>
+                                                            <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
+                                                                <Input className={`${scp_font.className}}`} placeholder="Enter your favourite songs" {...field} />
+                                                            </FormControl>
+                                                            <FormDescription>Enter your favourite music songs.</FormDescription>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, x: -100 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ duration: 0.5 }}
+                                            >
+                                                <FormField
+                                                    control={form.control}
+                                                    name="mood"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Mood</FormLabel>
                                                             <FormControl>
                                                                 <Select {...field}
                                                                     onValueChange={(value) => {
@@ -244,407 +568,95 @@ const ActivityForm = () => {
 
                                                                     }}>
                                                                     <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
-                                                                        <SelectValue placeholder="Select intensity level" />
+                                                                        <SelectValue placeholder="Select your mood" />
                                                                     </SelectTrigger>
                                                                     <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
-                                                                        <SelectItem value="low">Low</SelectItem>
-                                                                        <SelectItem value="medium">Medium</SelectItem>
-                                                                        <SelectItem value="high">High</SelectItem>
+                                                                        <SelectItem value="happy">Happy</SelectItem>
+                                                                        <SelectItem value="sad">Sad</SelectItem>
+                                                                        <SelectItem value="energetic">Energetic</SelectItem>
+                                                                        <SelectItem value="relaxed">Relaxed</SelectItem>
+                                                                        <SelectItem value="romantic">Romantic</SelectItem>
                                                                     </SelectContent>
                                                                 </Select>
                                                             </FormControl>
-                                                            <FormDescription>Select the intensity of your activity.</FormDescription>
+                                                            <FormDescription>Select your current mood.</FormDescription>
                                                             <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
                                             </motion.div>
-                                        )}
 
-                                        {["high", "medium"].includes(predictionPreference) && (
-                                            <motion.div
-                                                initial={{ opacity: 0, x: -100 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ duration: 0.5 }}
-                                            >
-                                                <FormField
-                                                    control={form.control}
-                                                    name="frequency"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Frequency</FormLabel>
-                                                            <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                                <Input className={`${scp_font.className}}`} placeholder="e.g., 3 times a week" {...field} />
-                                                            </FormControl>
-                                                            <FormDescription>Enter the frequency of your activity.</FormDescription>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </motion.div>
-                                        )}
+                                            <div className="space-x-4">
+                                                <Button className="hover:bg-gray-600" onClick={() => { setSelectedForm("Activity") }}>
+                                                    Previous
+                                                </Button>
 
-                                        {predictionPreference === "high" && (
-                                            <>
-                                                <motion.div
-                                                    initial={{ opacity: 0, x: -100 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.5 }}
-                                                >
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="distance"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Distance</FormLabel>
-                                                                <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                                    <Input className={`${scp_font.className}}`} placeholder="e.g., 5 km" {...field} />
-                                                                </FormControl>
-                                                                <FormDescription>Enter the distance covered (if applicable).</FormDescription>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </motion.div>
+                                                <Button className="hover:bg-gray-600" type="submit" disabled={isSubmitting}>
+                                                    Submit
+                                                </Button>
+                                            </div>
+                                        </>}
 
-                                                <motion.div
-                                                    initial={{ opacity: 0, x: -100 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.5 }}
-                                                >
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="location"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Location</FormLabel>
-                                                                <FormControl>
-                                                                    <Select {...field}
-                                                                        onValueChange={(value) => {
-                                                                            field.onChange(value);
 
-                                                                        }}>
-                                                                        <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
-                                                                            <SelectValue placeholder="Select location" />
-                                                                        </SelectTrigger>
-                                                                        <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
-                                                                            <SelectItem value="indoor">Indoor</SelectItem>
-                                                                            <SelectItem value="outdoor">Outdoor</SelectItem>
-                                                                        </SelectContent>
-                                                                    </Select>
-                                                                </FormControl>
-                                                                <FormDescription>Select the location of your activity.</FormDescription>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </motion.div>
+                                    </form>
+                                </Form>
+                            )}
 
-                                                <motion.div
-                                                    initial={{ opacity: 0, x: -100 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.5 }}
-                                                >
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="mood"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Mood</FormLabel>
-                                                                <FormControl>
-                                                                    <Select {...field}
-                                                                        onValueChange={(value) => {
-                                                                            field.onChange(value);
+                            {selectedForm === "Result" && (
+                                <div>
+                                    <h2 className="text-2xl md:px-8 font-bold tracking-tight">Recommended Songs</h2>
 
-                                                                        }}>
-                                                                        <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
-                                                                            <SelectValue placeholder="Select your mood" />
-                                                                        </SelectTrigger>
-                                                                        <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
-                                                                            <SelectItem value="energetic">Energetic</SelectItem>
-                                                                            <SelectItem value="relaxed">Relaxed</SelectItem>
-                                                                        </SelectContent>
-                                                                    </Select>
-                                                                </FormControl>
-                                                                <FormDescription>Select your mood during the activity.</FormDescription>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </motion.div>
+                                    {result.length == 0 && <div className="md:px-8 font-semibold my-4">No Songs Found!</div>}
 
-                                                <motion.div
-                                                    initial={{ opacity: 0, x: -100 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.5 }}
-                                                >
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="timeOfDay"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Time of Day</FormLabel>
-                                                                <FormControl>
-                                                                    <Select {...field}
-                                                                        onValueChange={(value) => {
-                                                                            field.onChange(value);
+                                    <div className="max-w-5xl">
+                                        <HoverEffect items={result} />
+                                    </div>
 
-                                                                        }}>
-                                                                        <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
-                                                                            <SelectValue placeholder="Select time of day" />
-                                                                        </SelectTrigger>
-                                                                        <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
-                                                                            <SelectItem value="morning">Morning</SelectItem>
-                                                                            <SelectItem value="afternoon">Afternoon</SelectItem>
-                                                                            <SelectItem value="evening">Evening</SelectItem>
-                                                                        </SelectContent>
-                                                                    </Select>
-                                                                </FormControl>
-                                                                <FormDescription>Select the time of day for your activity.</FormDescription>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </motion.div>
-
-                                                <motion.div
-                                                    initial={{ opacity: 0, x: -100 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.5 }}
-                                                >
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="equipment"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Equipment Used</FormLabel>
-                                                                <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                                    <Input className={`${scp_font.className}}`} placeholder="e.g., dumbbells, yoga mat" {...field} />
-                                                                </FormControl>
-                                                                <FormDescription>Enter the equipment used (if applicable).</FormDescription>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </motion.div>
-
-                                            </>
-                                        )}
-
-                                        <motion.div
-                                            initial={{ opacity: 0, x: -100 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.5 }}
-                                        >
-                                            <FormField
-                                                control={form.control}
-                                                name="additionalComments"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Additional Comments</FormLabel>
-                                                        <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                            <Input className={`${scp_font.className}}`} placeholder="Any other details..." {...field} />
-                                                        </FormControl>
-                                                        <FormDescription>Provide any additional comments or details.</FormDescription>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </motion.div>
-
-                                        <Button className="hover:bg-gray-600" onClick={() => { setSelectedForm("Music") }}>
-                                            Next
+                                    <div className="space-x-6 md:px-8 my-4">
+                                        <Button onClick={() => setSelectedForm("Activity")}>
+                                            Back to Activity
                                         </Button>
-                                    </>}
-                                {selectedForm === "Music" && <>
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -100 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <FormField
-                                            control={form.control}
-                                            name="languageOfMusic"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Language of Music</FormLabel>
-                                                    <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                        <Input className={`${scp_font.className}}`} placeholder="Enter language of music" {...field} />
-                                                    </FormControl>
-                                                    <FormDescription>Enter the language of the music you prefer.</FormDescription>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </motion.div>
-
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -100 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <FormField
-                                            control={form.control}
-                                            name="favouriteGenres"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Favourite Genres</FormLabel>
-                                                    <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                        <Input className={`${scp_font.className}}`} placeholder="Enter your favourite genres" {...field} />
-                                                    </FormControl>
-                                                    <FormDescription>Enter your favourite music genres.</FormDescription>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </motion.div>
-
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -100 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <FormField
-                                            control={form.control}
-                                            name="favouriteArtists"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Favourite Artists/Brands</FormLabel>
-                                                    <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                        <Input className={`${scp_font.className}}`} placeholder="Enter your favourite artists or brands" {...field} />
-                                                    </FormControl>
-                                                    <FormDescription>Enter your favourite music artists or brands.</FormDescription>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </motion.div>
-
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -100 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <FormField
-                                            control={form.control}
-                                            name="favouriteSongs"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Favourite Songs</FormLabel>
-                                                    <FormControl className="bg-[#121212] h-[50px] ring-2 border-none">
-                                                        <Input className={`${scp_font.className}}`} placeholder="Enter your favourite songs" {...field} />
-                                                    </FormControl>
-                                                    <FormDescription>Enter your favourite music songs.</FormDescription>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </motion.div>
-
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -100 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <FormField
-                                            control={form.control}
-                                            name="mood"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Mood</FormLabel>
-                                                    <FormControl>
-                                                        <Select {...field}
-                                                            onValueChange={(value) => {
-                                                                field.onChange(value);
-
-                                                            }}>
-                                                            <SelectTrigger className={`bg-[#121212] h-[50px] ring-2 border-none ${scp_font.className}`}>
-                                                                <SelectValue placeholder="Select your mood" />
-                                                            </SelectTrigger>
-                                                            <SelectContent className="bg-[#121212] border border-gray-400 rounded-lg text-white">
-                                                                <SelectItem value="happy">Happy</SelectItem>
-                                                                <SelectItem value="sad">Sad</SelectItem>
-                                                                <SelectItem value="energetic">Energetic</SelectItem>
-                                                                <SelectItem value="relaxed">Relaxed</SelectItem>
-                                                                <SelectItem value="romantic">Romantic</SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </FormControl>
-                                                    <FormDescription>Select your current mood.</FormDescription>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </motion.div>
-
-                                    <div className="space-x-4">
-                                        <Button className="hover:bg-gray-600" onClick={() => { setSelectedForm("Activity") }}>
-                                            Previous
-                                        </Button>
-
-                                        <Button className="hover:bg-gray-600" type="submit" disabled={isSubmitting}>
-                                            Submit
+                                        <Button onClick={() => setSelectedForm("Music")}>
+                                            Back to Music
                                         </Button>
                                     </div>
-                                </>}
-
-
-                            </form>
-                        </Form>
-                    )}
-
-                    {selectedForm === "Result" && (
-                        <div>
-                            <h2 className="text-2xl px-8 font-bold tracking-tight">Recommended Songs</h2>
-
-                            {result.length == 0 && <div className="px-8 font-semibold my-4">No Songs Found!</div>}
-
-                            <div className="max-w-5xl">
-                                <HoverEffect items={result} />
-                            </div>
-
-                            <div className="space-x-6 px-8 my-4">
-                                <Button onClick={() => setSelectedForm("Activity")}>
-                                    Back to Activity
-                                </Button>
-                                <Button onClick={() => setSelectedForm("Music")}>
-                                    Back to Music
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </div>
-                {(selectedForm === "Activity" || selectedForm === "Music") &&
-                    <div className="w-full hidden xl:flex items-center justify-center px-16">
-                        <div className="max-w-[700px]">
-                            <div className="h-[40rem] w-full bg-[#121212] flex flex-col items-center justify-center overflow-hidden rounded-md">
-                                <h1 className="md:text-5xl text-3xl lg:text-8xl font-bold text-center text-white relative z-20">
-                                    GymBeats AI
-                                </h1>
-                                <div className="w-[40rem] h-40 relative">
-
-                                    <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
-                                    <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
-                                    <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
-                                    <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
-
-                                    <SparklesCore
-                                        minSize={0.4}
-                                        maxSize={1}
-                                        particleDensity={1200}
-                                        className="w-full h-full"
-                                        particleColor="#FFFFFF"
-                                    />
-
-                                    <div className="absolute inset-0 w-full h-full bg-[#121212] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
                                 </div>
-                            </div>
+                            )}
                         </div>
+                        {(selectedForm === "Activity" || selectedForm === "Music") &&
+                            <div className="w-full hidden xl:flex items-center justify-center px-16">
+                                <div className="max-w-[700px]">
+                                    <div className="h-[40rem] w-full bg-[#121212] flex flex-col items-center justify-center overflow-hidden rounded-md">
+                                        <h1 className="md:text-5xl text-3xl lg:text-8xl font-bold text-center text-white relative z-20">
+                                            GymBeats AI
+                                        </h1>
+                                        <div className="w-[40rem] h-40 relative">
+
+                                            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
+                                            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
+                                            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
+                                            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
+
+                                            <SparklesCore
+                                                minSize={0.4}
+                                                maxSize={1}
+                                                particleDensity={1200}
+                                                className="w-full h-full"
+                                                particleColor="#FFFFFF"
+                                            />
+
+                                            <div className="absolute inset-0 w-full h-full bg-[#121212] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
 
                     </div>
-                }
+                </div>
+            </>}
 
-            </div>
         </div>
     );
 }

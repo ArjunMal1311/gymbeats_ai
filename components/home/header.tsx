@@ -34,7 +34,7 @@ const Header = ({ user }: UserProps) => {
       className={`fixed z-[999] top-0 left-0 w-full border-b border-gray-400 border-opacity-20 border-n-6 lg:backdrop-blur-sm ${openNavigation ? "bg-n-8" : "bg-n-8/90 backdrop-blur-sm"
         }`}
     >
-      <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
+      <div className="flex items-center justify-between px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
         <Link
           className={`${scp_font_2.className} w-fit xl:mr-8 block pl-4 items-center text-3xl`}
           href="/"
@@ -61,7 +61,7 @@ const Header = ({ user }: UserProps) => {
           <HamburgerMenu />
         </nav>
 
-        <div className="flex ml-auto">
+        <div className="flex justify-end">
           {user ? (
             <>
               <Button

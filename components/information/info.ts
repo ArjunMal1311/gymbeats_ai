@@ -16,8 +16,8 @@ export const navigation = [
   },
   {
     id: "3",
-    title: "About",
-    url: "/about",
+    title: "Chat",
+    url: "/chat",
   },
 ];
 
