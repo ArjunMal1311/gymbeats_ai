@@ -1,4 +1,7 @@
 "use client"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import React, { useState } from 'react';
 
 const ChatSection = () => {
@@ -15,7 +18,6 @@ const ChatSection = () => {
     if (input.trim()) {
       setMessages([...messages, { sender: 'user', text: input }]);
       setInput('');
-      // Simulate AI response
       setTimeout(() => {
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -25,46 +27,57 @@ const ChatSection = () => {
     }
   };
 
-  const handleInputChange = (e : any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
-  const handleKeyPress = (e : any) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSendMessage();
     }
   };
 
   return (
-    <div className="flex flex-col w-full max-w-4xl mx-auto p-4 rounded-lg">
-      <div className="flex flex-col space-y-4 mb-4">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`my-2 p-3 rounded-2xl max-w-xs ${
-              msg.sender === 'user' ? 'self-end bg-green-200 text-green-900' : 'self-start bg-gray-200 text-gray-900'
-            }`}
-          >
-            {msg.text}
+    <div className="flex flex-col h-screen">
+      <header className="flex items-center justify-between px-4 py-2 border-b fixed w-screen top-0">
+        <h1 className="text-lg font-semibold">Chat Room</h1>
+        <Button size="sm" variant="outline">
+          Leave Chat
+        </Button>
+      </header>
+      <main className="flex-1 overflow-y-auto px-4 mt-16 space-y-4">
+        {messages.map((message, index) => (
+          <div key={index} className={`flex items-end ${message.sender === 'user' ? 'justify-end' : ''} space-x-2`}>
+            {message.sender === 'ai' && (
+              <Avatar>
+                <AvatarImage alt="AI Avatar" src="/placeholder-avatar.jpg" />
+                <AvatarFallback>AI</AvatarFallback>
+              </Avatar>
+            )}
+            <div className={`p-2 rounded-lg ${message.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}>
+              <p className="text-sm">{message.text}</p>
+            </div>
+            {message.sender === 'user' && (
+              <Avatar>
+                <AvatarImage alt="User Avatar" src="/placeholder-avatar.jpg" />
+                <AvatarFallback>U</AvatarFallback>
+              </Avatar>
+            )}
           </div>
         ))}
-      </div>
-      <div className="fixed bottom-4 w-full space-x-2">
-        <input
-          type="text"
+      </main>
+      <footer className="flex justify-center fixed bottom-0 w-screen items-center border-t p-4">
+        <Input
+          className="flex-1 mx-8"
+          placeholder="Type a message"
           value={input}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
-          className="p-2 border border-gray-300 rounded-lg"
-          placeholder="Type a message..."
         />
-        <button
-          onClick={handleSendMessage}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-        >
+        <Button size="sm" variant="outline" className='mx-4 text-black' onClick={handleSendMessage}>
           Send
-        </button>
-      </div>
+        </Button>
+      </footer>
     </div>
   );
 };
