@@ -16,7 +16,6 @@ const Loading = () => {
     return (
         <div className='z-[999] flex flex-col w-screen h-screen justify-center items-center'>
             <div className='loader '></div>
-            {path === "/activity" && <div className={`my-3 fixed top-[54%] left-[48.75%] ${scp_font.className}`}>Generating</div>}
 
         </div>
     )
