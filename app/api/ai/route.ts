@@ -80,7 +80,7 @@ export async function POST(req: Request) {
         const result = await chat.sendMessage(formattedMessage);
         const response = await result.response;
         const text = await response.text();
-        console.log(text);
+        // console.log(text);
 
         const songs = [];
         const pattern = /\d+\.\s+\*\*(.*?)\*\*\s+-\s+(.*?)\n/g;

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/home/header";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { initalProfile } from "@/lib/initial-profile";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <body>
           <Header user={user} />
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
