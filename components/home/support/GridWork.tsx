@@ -226,6 +226,13 @@ const SkeletonFive = () => {
             className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2"
         >
             <motion.div
+                variants={variantsSecond}
+                className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center justify-end space-x-2 w-3/4 ml-auto bg-white dark:bg-[#121212]"
+            >
+                <p className="text-xs text-neutral-500">Boost your performance with AI.</p>
+                <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
+            </motion.div>
+            <motion.div
                 variants={variants}
                 className="flex flex-row rounded-2xl border border-neutral-100 dark:border-white/[0.2] p-2 items-start space-x-2 bg-white dark:bg-[#121212]"
             >
@@ -237,17 +244,55 @@ const SkeletonFive = () => {
                     className="rounded-full h-10 w-10"
                 />
                 <p className="text-xs text-neutral-500">
-                    Get real-time music suggestions during workouts.
+                    Personalized playlists based on your activity type.
                 </p>
             </motion.div>
             <motion.div
                 variants={variantsSecond}
-                className="flex flex-row rounded-full border border-neutral-100  dark:border-white/[0.2] p-2 items-center justify-end space-x-2 w-3/4 ml-auto bg-white dark:bg-[#121212]"
+                className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center justify-end space-x-2 w-3/4 ml-auto bg-white dark:bg-[#121212]"
             >
-                <p className="text-xs text-neutral-500">Boost your performance with AI.</p>
+                <p className="text-xs text-neutral-500">Stay motivated with upbeat tracks.</p>
                 <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
             </motion.div>
+            <motion.div
+                variants={variants}
+                className="flex flex-row rounded-2xl border border-neutral-100 dark:border-white/[0.2] p-2 items-start space-x-2 bg-white dark:bg-[#121212]"
+            >
+                <Image
+                    src="/logo.svg"
+                    alt="avatar"
+                    height="100"
+                    width="100"
+                    className="rounded-full h-10 w-10"
+                />
+                <p className="text-xs text-neutral-500">
+                    Discover new music tailored to your preferences.
+                </p>
+            </motion.div>
+            <motion.div
+                variants={variantsSecond}
+                className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center justify-end space-x-2 w-3/4 ml-auto bg-white dark:bg-[#121212]"
+            >
+                <p className="text-xs text-neutral-500">Find the perfect rhythm for your run.</p>
+                <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
+            </motion.div>
+            <motion.div
+                variants={variants}
+                className="flex flex-row rounded-2xl border border-neutral-100 dark:border-white/[0.2] p-2 items-start space-x-2 bg-white dark:bg-[#121212]"
+            >
+                <Image
+                    src="/logo.svg"
+                    alt="avatar"
+                    height="100"
+                    width="100"
+                    className="rounded-full h-10 w-10"
+                />
+                <p className="text-xs text-neutral-500">
+                    Adjust your playlist based on workout duration.
+                </p>
+            </motion.div>
         </motion.div>
+
     );
 };
 

@@ -20,7 +20,7 @@ const Page = async () => {
 
     return (
         <div className='pt-24 lg:px-12 px-8 flex justify-center items-center'>
-            <Recommendations />
+            <Recommendations recommendations={data}/>
 
         </div>
     )
