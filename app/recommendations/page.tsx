@@ -1,5 +1,4 @@
 import { BentoGrid2 } from '@/components/ui/bento-grid-2';
-import { HoverEffect } from '@/components/ui/card-hover';
 import { currentProfile } from '@/lib/current-profile'
 import { fetchRecommendations } from '@/lib/fetch-recommendations';
 import React from 'react'
@@ -20,8 +19,7 @@ const Page = async () => {
 
     return (
         <div className='pt-24 lg:px-12 px-8 flex justify-center items-center'>
-            <Recommendations recommendations={data}/>
-
+            <Recommendations recommendations={data} />
         </div>
     )
 }

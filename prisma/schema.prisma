@@ -19,10 +19,11 @@ model Profile {
 }
 
 model Recommendation {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  song   String
-  artist String
-  liked  Boolean @default(false)
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  song         String
+  artist       String
+  liked        Boolean @default(false)
+  activityType String
 
   userId String
 }

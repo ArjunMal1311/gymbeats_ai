@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import React, { useState } from 'react';
 
 const ChatSection = () => {
+  const [disabled, isDisabled] = useState(true)
   const [messages, setMessages] = useState([
     { sender: 'user', text: 'Hi, how can I help you today?' },
     { sender: 'ai', text: 'Hello! I need some information on your services.' },
@@ -39,6 +40,7 @@ const ChatSection = () => {
 
   return (
     <div className="flex flex-col h-screen">
+      {!disabled ? <>
       <header className="flex items-center justify-between px-4 py-2 border-b fixed w-screen top-0">
         <h1 className="text-lg font-semibold">Chat Room</h1>
         <Button size="sm" variant="outline">
@@ -78,6 +80,7 @@ const ChatSection = () => {
           Send
         </Button>
       </footer>
+      </> : <>Currently in Development Mode</>}
     </div>
   );
 };

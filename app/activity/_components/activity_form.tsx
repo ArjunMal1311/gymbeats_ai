@@ -20,9 +20,10 @@ import { Vortex } from "@/components/ui/vortex";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { HoverEffect } from "@/components/ui/card-hover";
 import Loading from "@/app/loading";
+import { IconBrandSpotify } from "@tabler/icons-react";
 
 const scp_font = Source_Code_Pro({
-    weight: "500",
+    weight: "700",
     subsets: []
 })
 
@@ -126,10 +127,10 @@ const ActivityForm = () => {
                         </aside>
 
 
-                        <div className="flex-1 max-w-6xl">
+                        <div className="flex-1">
                             {selectedForm !== "Result" && (
                                 <Form {...form}>
-                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-6xl">
                                         {selectedForm === "Activity" &&
                                             <>
                                                 <FormField
@@ -608,7 +609,7 @@ const ActivityForm = () => {
 
                                     {result.length == 0 && <div className="md:px-8 font-semibold my-4">No Songs Found!</div>}
 
-                                    <div className="max-w-5xl">
+                                    <div className="w-full">
                                         <HoverEffect items={result} />
                                     </div>
 
@@ -618,6 +619,9 @@ const ActivityForm = () => {
                                         </Button>
                                         <Button onClick={() => setSelectedForm("Music")}>
                                             Back to Music
+                                        </Button>
+                                        <Button onClick={() => { }} className="bg-[#121212] border border-green-400 hover:bg-gray-500 hover:bg-opacity-15 transition-all duration-300">
+                                            Export to <div className={`ml-1 flex items-center`}>Spotify</div>
                                         </Button>
                                     </div>
                                 </div>

@@ -44,6 +44,7 @@ export async function POST(req: Request) {
         - Do not repeat the example response.
         - Always respect the user's language preferences when suggesting songs.
         - Provide all song recommendations in the specified language if mentioned.
+        - Number of songs should match duration of the activity (in ${message.duration} minutes)
 
         ### Example Response (for reference only):
 
@@ -54,6 +55,7 @@ export async function POST(req: Request) {
         3. **Into You** - Ariana Grande
         4. **Levitating** - Dua Lipa
         5. **Shape of You** - Ed Sheeran
+        ...... (Depends on duration)
 
         Enjoy your workout with these tracks!
 
@@ -77,16 +79,20 @@ export async function POST(req: Request) {
             },
         });
 
-        const result = await chat.sendMessage(formattedMessage);
+        const result = await chat.sendMessage("");
         const response = await result.response;
         const text = await response.text();
-        // console.log(text);
 
-        const songs = [];
+        // Calculate number of songs based on activity duration
+        const activityDuration = parseInt(message.duration) || 0; // Duration in minutes
+        let numSongs = Math.ceil(activityDuration / 5); // Adjust based on the desired length of each song or other criteria
+
         const pattern = /\d+\.\s+\*\*(.*?)\*\*\s+-\s+(.*?)\n/g;
         let match;
+        const songs = [];
 
-        while ((match = pattern.exec(text)) !== null) {
+        // Loop through matches until reaching the desired number of songs
+        while (songs.length < numSongs && (match = pattern.exec(text)) !== null) {
             const songTitle = match[1];
             const artist = match[2];
             songs.push({ song: songTitle, artist: artist });
@@ -99,13 +105,20 @@ export async function POST(req: Request) {
                         song: song.song,
                         artist: song.artist,
                         liked: false,
-                        userId: userId, 
+                        userId: userId,
+                        activityType: message.activityType
                     },
                 });
             }
         }
 
-        return new NextResponse(text);
+        let responseText = "Sure! Based on your fitness activities and music preferences, here are some songs that would be perfect for your workout:\n\n";
+        songs.forEach((song, index) => {
+            responseText += `${index + 1}. **${song.song}** - ${song.artist}\n`;
+        });
+        responseText += "\nEnjoy your workout with these tracks!";
+
+        return new NextResponse(responseText);
 
     } catch (error) {
         console.error("Error:", error);
