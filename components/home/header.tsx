@@ -34,31 +34,31 @@ const Header = ({ user }: UserProps) => {
       className={`fixed z-[999] top-0 left-0 w-full border-b border-gray-400 border-opacity-20 border-n-6 lg:backdrop-blur-sm ${openNavigation ? "bg-n-8" : "bg-n-8/90 backdrop-blur-sm"
         }`}
     >
-      <div className="flex items-center justify-between px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
+      <div className="flex items-center justify-between px-5 lg:px-7.5 lg:px-10 max-lg:py-4">
         <Link
-          className={`${scp_font_2.className} w-fit xl:mr-8 block pl-4 items-center text-3xl`}
+          className={`${scp_font_2.className} w-fit lg:mr-8 block pl-4 items-center text-3xl`}
           href="/"
         >
           Gb. AI
         </Link>
         <nav
           className={`${openNavigation ? "flex" : "hidden"
-            } fixed z-[999] top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
+            } absolute z-[999] top-[5rem] right-0 bg-white bg-opacity-15 border my-4 border-opacity-30 mr-8 border-white rounded-lg px-4 py-2 lg:static lg:flex lg:bg-transparent`}
         >
-          <div className="relative z-[999] flex flex-col items-center justify-center m-auto lg:flex-row">
+          <div className="relative z-[999] flex flex-col items-center justify-center lg:flex-row">
             {navigation.map((item) => (
               <Link
                 key={item.id}
                 href={item.url}
-                className={`block relative font-code text-white text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-sm text-[#FFFFFF80] lg:font-semibold duration-200 ${scp_font.className} 
-              ${item.url === path ? " text-white" : ""} lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+                className={`block relative font-code hover:text-white transition-all duration-300 text-gray-400 md:uppercase  lg:-mr-0.25 lg:text-[15px] text-[#FFFFFF80] lg:font-semibold ${scp_font.className} 
+              ${item.url === path ? " text-white" : ""} lg:leading-5 lg:hover:text-n-1 lg:px-12`}
               >
                 {item.title}
               </Link>
             ))}
           </div>
 
-          <HamburgerMenu />
+          {/* <HamburgerMenu /> */}
         </nav>
 
         <div className="flex justify-end">
