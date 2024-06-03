@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { BentoGrid, BentoGridItem } from "../ui/bento-grid";
 import {
+  IconBrandSpotify,
   IconMusic,
 } from "@tabler/icons-react";
 
@@ -15,7 +16,7 @@ export function BentoGrid2({ recommendations }: { recommendations: ({ name: stri
   const icon = <IconMusic className="h-4 w-4 text-neutral-500" />;
 
   return (
-    <BentoGrid className="max-w-4xl mx-auto dark">
+    <BentoGrid className="w-[750px] mx-auto dark">
       {Array.isArray(recommendations) && recommendations.map((item, i) => (
         <BentoGridItem
           key={i}
@@ -27,8 +28,10 @@ export function BentoGrid2({ recommendations }: { recommendations: ({ name: stri
               animate="visible"
               variants={itemVariants}
               transition={{ duration: 0.3, delay: i * 0.1 }}
-              className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"
-            ></motion.div>
+              className="flex flex-1 justify-end p-3 w-full h-[200px] rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-800"
+            >
+              <IconBrandSpotify className="text-[#1DB954]" size={30}/>
+            </motion.div>
           }
           icon={
             <motion.div
