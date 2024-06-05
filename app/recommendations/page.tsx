@@ -1,4 +1,3 @@
-import { BentoGrid2 } from '@/components/ui/bento-grid-2';
 import { currentProfile } from '@/lib/current-profile'
 import { fetchRecommendations } from '@/lib/fetch-recommendations';
 import React from 'react'

@@ -1,9 +1,9 @@
-
+import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { db } from "./db";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const fetchGrid = async () => {
+
     const { userId } = auth();
 
     if (!userId) {
